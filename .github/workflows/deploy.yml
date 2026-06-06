@@ -75,6 +75,17 @@ jobs:
             "echo '${SSHPASS}' | sudo -S ${DOCKER} compose -f ${NAS_PATH}/docker-compose.yml up -d --remove-orphans 2>&1 && \
              echo '${SSHPASS}' | sudo -S ${DOCKER} compose -f ${NAS_PATH}/docker-compose.yml ps"
 
+      - name: Recargar nginx (toma cambios de nginx.conf montado)
+        env:
+          SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
+        run: |
+          # nginx.conf es un bind-mount: si el contenedor no se recrea, el proceso
+          # sigue con la config vieja. Validamos y recargamos en caliente.
+          sshpass -e ssh -o StrictHostKeyChecking=no "${NAS_USER}@${NAS_HOST}" \
+            "echo '${SSHPASS}' | sudo -S ${DOCKER} exec garibay-nginx nginx -t && \
+             echo '${SSHPASS}' | sudo -S ${DOCKER} exec garibay-nginx nginx -s reload && \
+             echo '✅ nginx recargado'"
+
       - name: Verificar que nginx quedó arriba
         env:
           SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
