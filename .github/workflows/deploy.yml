@@ -1,0 +1,76 @@
+name: Deploy to NAS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Permite disparar manualmente desde GitHub
+
+# Evita dos deploys simultáneos pisándose en el NAS.
+concurrency:
+  group: deploy-nas
+  cancel-in-progress: false
+
+env:
+  NAS_USER: acidfenix
+  NAS_HOST: 192.168.50.158
+  NAS_PATH: /volume1/docker/constructora-garibay
+  DOCKER: /usr/local/bin/docker
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Verificar artefactos del sitio
+        run: |
+          test -f deploy/site/index.html       || (echo "❌ falta deploy/site/index.html" && exit 1)
+          test -f deploy/nginx/nginx.conf      || (echo "❌ falta deploy/nginx/nginx.conf" && exit 1)
+          test -f deploy/docker-compose.yml    || (echo "❌ falta deploy/docker-compose.yml" && exit 1)
+          echo "✅ Artefactos presentes"
+
+      - name: Sincronizar deploy/ al NAS
+        env:
+          SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
+        run: |
+          sshpass -e rsync -avz --delete \
+            --exclude ".env" \
+            --exclude ".gitignore" \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            deploy/ "${NAS_USER}@${NAS_HOST}:${NAS_PATH}/"
+
+      - name: Levantar / actualizar contenedores
+        env:
+          SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=no "${NAS_USER}@${NAS_HOST}" \
+            "echo '${SSHPASS}' | sudo -S ${DOCKER} compose -f ${NAS_PATH}/docker-compose.yml up -d --remove-orphans 2>&1 && \
+             echo '${SSHPASS}' | sudo -S ${DOCKER} compose -f ${NAS_PATH}/docker-compose.yml ps"
+
+      - name: Verificar que nginx quedó arriba
+        env:
+          SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
+        run: |
+          for i in $(seq 1 10); do
+            STATUS=$(sshpass -e ssh -o StrictHostKeyChecking=no "${NAS_USER}@${NAS_HOST}" \
+              "echo '${SSHPASS}' | sudo -S ${DOCKER} inspect --format='{{.State.Status}}' garibay-nginx 2>/dev/null || echo missing")
+            echo "  Estado garibay-nginx: $STATUS (intento $i/10)"
+            if [ "$STATUS" = "running" ]; then
+              echo "✅ Deploy completado. Sitio servido por garibay-nginx."
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "❌ garibay-nginx no quedó corriendo"
+          sshpass -e ssh -o StrictHostKeyChecking=no "${NAS_USER}@${NAS_HOST}" \
+            "echo '${SSHPASS}' | sudo -S ${DOCKER} logs garibay-nginx --tail 40 2>&1" || true
+          exit 1
+
+      - name: Resultado
+        if: failure()
+        run: |
+          echo "❌ Error en el deploy. Revisa los logs arriba."
+          exit 1

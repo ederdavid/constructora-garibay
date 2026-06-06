@@ -1,0 +1,35 @@
+name: constructora-garibay
+
+# Constructora Garibay — sitio estático
+#
+# Servicios:
+#   nginx        → sirve el sitio estático (./site)
+#   cloudflared  → tunnel hacia Cloudflare (no abre puertos en el router)
+#
+# El tunnel se crea/configura una sola vez con scripts/cf-tunnel-setup.mjs.
+# Ese script imprime el CLOUDFLARED_TOKEN que va en este .env.
+
+services:
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: garibay-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./site:/usr/share/nginx/html:ro
+    networks:
+      - garibay-net
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: garibay-cloudflared
+    restart: unless-stopped
+    depends_on:
+      - nginx
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_TOKEN:?set CLOUDFLARED_TOKEN in .env}
+    networks:
+      - garibay-net
+
+networks:
+  garibay-net:
+    driver: bridge

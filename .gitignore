@@ -1,0 +1,8 @@
+# Secrets
+deploy/.env
+.env
+
+# OS / editor
+.DS_Store
+node_modules/
+*.log

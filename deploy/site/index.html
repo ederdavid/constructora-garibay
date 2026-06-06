@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Constructora Garibay — Arquitectura y construcción</title>
+  <meta name="description" content="Estudio de arquitectura y construcción. Diseñamos y edificamos espacios residenciales y comerciales con materiales nobles, luz natural y detalle artesanal." />
+
+  <meta property="og:title" content="Constructora Garibay" />
+  <meta property="og:description" content="Arquitectura y construcción. Espacios que perduran." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://constructoragaribay.com" />
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Manrope:wght@300..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- ── Nav ─────────────────────────────────────────────── -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#top" aria-label="Constructora Garibay, inicio">
+        <span class="nav__mark">G</span>
+        <span class="nav__name">Constructora Garibay</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Principal">
+        <a href="#estudio">Estudio</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#contacto" class="nav__cta">Contacto</a>
+      </nav>
+
+      <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span>
+      </button>
+    </div>
+
+    <div class="nav__mobile" id="mobile-menu" hidden>
+      <a href="#estudio">Estudio</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <span id="top"></span>
+
+    <!-- ── Hero ──────────────────────────────────────────── -->
+    <section class="hero">
+      <div class="hero__copy reveal">
+        <p class="eyebrow">Estudio de arquitectura · México</p>
+        <h1 class="hero__title">Arquitectura<br />que perdura.</h1>
+        <p class="hero__lead">
+          Diseñamos y construimos casas y espacios comerciales donde la luz, la
+          proporción y los materiales nobles trabajan juntos. Cada proyecto se
+          piensa para durar décadas, no temporadas.
+        </p>
+        <div class="hero__actions">
+          <a href="#proyectos" class="btn btn--primary">Ver proyectos</a>
+          <a href="#contacto" class="btn btn--ghost">Iniciar un proyecto</a>
+        </div>
+      </div>
+      <!-- Slot de imagen: reemplaza el div .ph por <img src="assets/tu-foto.jpg" alt="…"> -->
+      <figure class="hero__media reveal">
+        <div class="ph ph--hero" role="img" aria-label="Espacio para fotografía del proyecto destacado">
+          <span class="ph__tag">Fotografía</span>
+          <span class="ph__label">Proyecto destacado</span>
+        </div>
+      </figure>
+    </section>
+
+    <!-- ── Marquee / stats ───────────────────────────────── -->
+    <section class="meta">
+      <div class="meta__item reveal"><span class="meta__num">18</span><span class="meta__label">años de trayectoria</span></div>
+      <div class="meta__item reveal"><span class="meta__num">60+</span><span class="meta__label">proyectos entregados</span></div>
+      <div class="meta__item reveal"><span class="meta__num">100%</span><span class="meta__label">diseño y obra propia</span></div>
+    </section>
+
+    <!-- ── Estudio / About ───────────────────────────────── -->
+    <section class="section estudio" id="estudio">
+      <div class="section__head reveal">
+        <p class="eyebrow">El estudio</p>
+        <h2 class="section__title">Un solo equipo, del primer trazo a la entrega de llaves.</h2>
+      </div>
+      <div class="estudio__grid">
+        <p class="estudio__text reveal">
+          Constructora Garibay es un estudio que diseña y construye bajo el mismo
+          techo. Esa cercanía entre arquitectura y obra nos permite cuidar el
+          detalle real: cómo cae una junta, cómo entra el sol en invierno, cómo
+          envejece un muro. No subcontratamos el criterio.
+        </p>
+        <p class="estudio__text reveal">
+          Trabajamos con concreto aparente, madera, piedra local y acero, en
+          composiciones sobrias que dejan hablar al material. El resultado son
+          espacios serenos, bien construidos y pensados para la forma en que de
+          verdad se habitan.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── Proyectos ─────────────────────────────────────── -->
+    <section class="section proyectos" id="proyectos">
+      <div class="section__head reveal">
+        <p class="eyebrow">Selección de proyectos</p>
+        <h2 class="section__title">Obra reciente</h2>
+      </div>
+
+      <div class="projects">
+        <!-- Cada slot: reemplaza el div .ph por <img src="assets/tu-foto.jpg" alt="…"> -->
+        <article class="project reveal">
+          <a href="#contacto" class="project__media">
+            <span class="ph" aria-hidden="true"><span class="ph__tag">01</span></span>
+          </a>
+          <div class="project__info">
+            <span class="project__index">01</span>
+            <h3 class="project__name">Casa Sierra</h3>
+            <p class="project__type">Residencial · Valle de Bravo</p>
+          </div>
+        </article>
+
+        <article class="project reveal">
+          <a href="#contacto" class="project__media">
+            <span class="ph" aria-hidden="true"><span class="ph__tag">02</span></span>
+          </a>
+          <div class="project__info">
+            <span class="project__index">02</span>
+            <h3 class="project__name">Torre Centro</h3>
+            <p class="project__type">Uso mixto · Guadalajara</p>
+          </div>
+        </article>
+
+        <article class="project reveal">
+          <a href="#contacto" class="project__media">
+            <span class="ph" aria-hidden="true"><span class="ph__tag">03</span></span>
+          </a>
+          <div class="project__info">
+            <span class="project__index">03</span>
+            <h3 class="project__name">Pabellón Norte</h3>
+            <p class="project__type">Comercial · Monterrey</p>
+          </div>
+        </article>
+
+        <article class="project reveal">
+          <a href="#contacto" class="project__media">
+            <span class="ph" aria-hidden="true"><span class="ph__tag">04</span></span>
+          </a>
+          <div class="project__info">
+            <span class="project__index">04</span>
+            <h3 class="project__name">Casa Patio</h3>
+            <p class="project__type">Residencial · Querétaro</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── Servicios ─────────────────────────────────────── -->
+    <section class="section servicios" id="servicios">
+      <div class="section__head reveal">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2 class="section__title">Servicios</h2>
+      </div>
+
+      <div class="services">
+        <article class="service reveal">
+          <span class="service__num">01</span>
+          <h3 class="service__title">Diseño arquitectónico</h3>
+          <p class="service__text">Anteproyecto, proyecto ejecutivo y todo el detalle constructivo. Diseñamos pensando en cómo se va a construir.</p>
+        </article>
+        <article class="service reveal">
+          <span class="service__num">02</span>
+          <h3 class="service__title">Construcción y obra</h3>
+          <p class="service__text">Ejecutamos con cuadrilla propia y proveedores de confianza, con control de calidad en cada etapa de la obra.</p>
+        </article>
+        <article class="service reveal">
+          <span class="service__num">03</span>
+          <h3 class="service__title">Remodelación</h3>
+          <p class="service__text">Intervenciones que respetan lo existente y suman luz, orden y materiales nobles a espacios ya construidos.</p>
+        </article>
+        <article class="service reveal">
+          <span class="service__num">04</span>
+          <h3 class="service__title">Gestión integral</h3>
+          <p class="service__text">Presupuesto, calendario, permisos y supervisión. Un solo interlocutor del primer boceto a la entrega.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ── Quote / philosophy ────────────────────────────── -->
+    <section class="quote">
+      <blockquote class="reveal">
+        <p>“Construir bien es una forma de respeto: por el lugar, por el material y por quien va a habitarlo.”</p>
+        <cite>Constructora Garibay</cite>
+      </blockquote>
+    </section>
+
+    <!-- ── Contacto ──────────────────────────────────────── -->
+    <section class="section contacto" id="contacto">
+      <div class="contacto__grid">
+        <div class="contacto__intro reveal">
+          <p class="eyebrow">Contacto</p>
+          <h2 class="section__title">¿Tienes un proyecto en mente?</h2>
+          <p class="contacto__lead">Cuéntanos qué quieres construir o remodelar. Respondemos a cada mensaje de forma personal.</p>
+
+          <ul class="contacto__details">
+            <li><span>Correo</span><a href="mailto:hola@constructoragaribay.com">hola@constructoragaribay.com</a></li>
+            <li><span>Teléfono</span><a href="tel:+520000000000">+52 000 000 0000</a></li>
+            <li><span>Instagram</span><a href="https://www.instagram.com/constructora.garibay/" target="_blank" rel="noopener">@constructora.garibay</a></li>
+          </ul>
+        </div>
+
+        <form class="contacto__form reveal" action="mailto:hola@constructoragaribay.com" method="post" enctype="text/plain">
+          <label>Nombre
+            <input type="text" name="nombre" autocomplete="name" required />
+          </label>
+          <label>Correo
+            <input type="email" name="correo" autocomplete="email" required />
+          </label>
+          <label>Cuéntanos del proyecto
+            <textarea name="mensaje" rows="4" required></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary">Enviar mensaje</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__brand">Constructora Garibay</span>
+      <span class="footer__meta">Arquitectura &amp; construcción · México</span>
+      <span class="footer__copy">© <span id="year"></span> Constructora Garibay. Todos los derechos reservados.</span>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
