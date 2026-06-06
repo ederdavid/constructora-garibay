@@ -32,6 +32,7 @@
         <a href="#estudio">Estudio</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#servicios">Servicios</a>
+        <a href="#cotizador">Cotizador</a>
         <a href="#contacto" class="nav__cta">Contacto</a>
       </nav>
 
@@ -44,6 +45,7 @@
       <a href="#estudio">Estudio</a>
       <a href="#proyectos">Proyectos</a>
       <a href="#servicios">Servicios</a>
+      <a href="#cotizador">Cotizador</a>
       <a href="#contacto">Contacto</a>
     </div>
   </header>
@@ -196,6 +198,45 @@
         <p>“Construir bien es una forma de respeto: por el lugar, por el material y por quien va a habitarlo.”</p>
         <cite>Constructora Garibay</cite>
       </blockquote>
+    </section>
+
+    <!-- ── Cotizador ─────────────────────────────────────── -->
+    <section class="section cotizador" id="cotizador">
+      <div class="section__head reveal">
+        <p class="eyebrow">Estimación rápida</p>
+        <h2 class="section__title">Cotizador por metro cuadrado</h2>
+      </div>
+
+      <div class="cotizador__grid">
+        <div class="cotizador__controls reveal">
+          <label class="cz-field" for="cz-m2">
+            <span class="cz-field__label">Metros cuadrados de construcción</span>
+            <span class="cz-field__input">
+              <input type="number" id="cz-m2" min="1" max="5000" step="1" value="120"
+                     inputmode="numeric" autocomplete="off" />
+              <span class="cz-field__unit">m²</span>
+            </span>
+          </label>
+
+          <input type="range" id="cz-range" class="cz-range"
+                 min="20" max="1000" step="5" value="120"
+                 aria-label="Ajustar metros cuadrados" />
+          <div class="cz-range__scale" aria-hidden="true"><span>20 m²</span><span>1000 m²</span></div>
+
+          <p class="cz-rate">Precio base de obra: <strong id="cz-rate">$15,000</strong> MXN por m²</p>
+        </div>
+
+        <div class="cotizador__result reveal">
+          <span class="cz-result__label">Estimado aproximado</span>
+          <output id="cz-total" class="cz-result__total" for="cz-m2">$1,800,000 MXN</output>
+          <p class="cz-result__note">
+            Cifra orientativa basada en el precio base de obra. La cotización
+            final depende del diseño, los acabados, las instalaciones y las
+            condiciones del terreno.
+          </p>
+          <a href="#contacto" class="btn btn--primary">Solicitar cotización formal</a>
+        </div>
+      </div>
     </section>
 
     <!-- ── Contacto ──────────────────────────────────────── -->

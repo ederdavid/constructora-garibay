@@ -259,6 +259,65 @@ a { color: inherit; text-decoration: none; }
 .contacto__form textarea { resize: vertical; }
 .contacto__form .btn { justify-self: start; margin-top: .25rem; }
 
+/* ── Cotizador ────────────────────────────────────────────── */
+.cotizador__grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem); align-items: stretch;
+}
+.cotizador__controls { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.cz-field { display: grid; gap: .6rem; }
+.cz-field__label { font-size: .85rem; color: var(--ink-soft); letter-spacing: .02em; }
+.cz-field__input {
+  display: flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
+  padding: .5rem .9rem; transition: border-color .2s ease;
+}
+.cz-field__input:focus-within { border-color: var(--ink); }
+.cz-field__input input {
+  font-family: var(--serif); font-size: clamp(1.6rem, 4vw, 2.1rem); color: var(--ink);
+  border: 0; background: transparent; width: 100%; padding: .2rem 0; -moz-appearance: textfield;
+}
+.cz-field__input input:focus { outline: none; }
+.cz-field__input input::-webkit-outer-spin-button,
+.cz-field__input input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cz-field__unit { font-family: var(--serif); font-size: 1.3rem; color: var(--muted); }
+
+.cz-range {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 2px;
+  background: var(--line); border-radius: 2px; cursor: pointer; margin: .25rem 0 0;
+}
+.cz-range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--ink); border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--ink); transition: transform .12s ease;
+}
+.cz-range::-webkit-slider-thumb:active { transform: scale(1.12); }
+.cz-range::-moz-range-thumb {
+  width: 18px; height: 18px; border-radius: 50%; background: var(--ink);
+  border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--ink);
+}
+.cz-range:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.cz-range__scale { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-top: -.5rem; }
+
+.cz-rate { font-size: .95rem; color: var(--ink-soft); margin: .25rem 0 0; }
+.cz-rate strong { font-family: var(--serif); font-weight: 400; color: var(--ink); }
+
+.cotizador__result {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
+  padding: clamp(1.75rem, 4vw, 2.75rem);
+  border: 1px solid var(--line); border-radius: 12px; background: var(--surface);
+}
+.cz-result__label { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--accent-ink); font-weight: 600; }
+.cz-result__total {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.05;
+  letter-spacing: -0.02em; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.cz-result__note { color: var(--muted); font-size: .9rem; margin: 0; max-width: 34ch; }
+.cotizador__result .btn { margin-top: auto; }
+
 /* ── Footer ───────────────────────────────────────────────── */
 .footer { border-top: 1px solid var(--line); }
 .footer__inner {
@@ -286,6 +345,7 @@ a { color: inherit; text-decoration: none; }
   .estudio__grid,
   .projects,
   .services,
+  .cotizador__grid,
   .contacto__grid { grid-template-columns: 1fr; }
   .service { border-right: 0; }
   .service:nth-last-child(2) { border-bottom: 1px solid var(--line); }

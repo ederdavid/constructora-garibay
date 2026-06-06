@@ -34,6 +34,60 @@
     });
   }
 
+  // ── Cotizador por metro cuadrado ────────────────────────
+  // Precio base de obra. Cambiar aquí ajusta todo el cotizador.
+  const RATE_PER_M2 = 15000; // MXN
+  const MIN_M2 = 1;
+  const MAX_M2 = 5000;
+
+  const m2Input = document.getElementById("cz-m2");
+  const m2Range = document.getElementById("cz-range");
+  const totalOut = document.getElementById("cz-total");
+  const rateOut = document.getElementById("cz-rate");
+
+  if (m2Input && totalOut) {
+    const mxn = new Intl.NumberFormat("es-MX", {
+      style: "currency",
+      currency: "MXN",
+      maximumFractionDigits: 0,
+    });
+
+    const clamp = (n) => Math.min(MAX_M2, Math.max(MIN_M2, n));
+
+    if (rateOut) rateOut.textContent = mxn.format(RATE_PER_M2);
+
+    const render = (m2) => {
+      totalOut.textContent = `${mxn.format(m2 * RATE_PER_M2)} MXN`;
+    };
+
+    // El número manda; el slider lo sigue (y se topa en su propio máximo).
+    const fromInput = () => {
+      const raw = parseInt(m2Input.value, 10);
+      if (Number.isNaN(raw)) {
+        totalOut.textContent = "—";
+        return;
+      }
+      const m2 = clamp(raw);
+      if (m2Range) m2Range.value = Math.min(Number(m2Range.max), m2);
+      render(m2);
+    };
+
+    const fromRange = () => {
+      const m2 = clamp(parseInt(m2Range.value, 10));
+      m2Input.value = m2;
+      render(m2);
+    };
+
+    m2Input.addEventListener("input", fromInput);
+    m2Input.addEventListener("blur", () => {
+      if (m2Input.value !== "") m2Input.value = clamp(parseInt(m2Input.value, 10) || MIN_M2);
+      fromInput();
+    });
+    if (m2Range) m2Range.addEventListener("input", fromRange);
+
+    fromInput(); // estado inicial
+  }
+
   // ── Scroll-reveal via IntersectionObserver ──────────────
   const reveals = document.querySelectorAll(".reveal");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
