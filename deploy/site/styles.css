@@ -263,6 +263,10 @@ a { color: inherit; text-decoration: none; }
   transition: box-shadow .4s ease, border-color .4s ease;
 }
 .contacto__form .btn { justify-self: start; margin-top: .25rem; }
+.btn--wa { gap: .55rem; }
+.btn__icon { flex: none; }
+.field-opt { color: var(--muted); font-weight: 400; }
+.contacto__hint { font-size: .82rem; color: var(--muted); margin: .3rem 0 0; }
 
 /* ── Cotizador ────────────────────────────────────────────── */
 .cotizador__grid {

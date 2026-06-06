@@ -135,6 +135,42 @@
     render(); // estado inicial
   }
 
+  // ── Contacto por WhatsApp ───────────────────────────────
+  // Número de WhatsApp del negocio: código de país + número, solo dígitos
+  // (sin "+", sin espacios). México = 52 + 10 dígitos. CAMBIAR por el real.
+  const WHATSAPP = "525500000000";
+
+  const waLink = document.getElementById("wa-link");
+  if (waLink) {
+    waLink.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
+      "Hola Constructora Garibay, me gustaría más información."
+    )}`;
+  }
+
+  const waForm = document.getElementById("contacto-form");
+  if (waForm) {
+    const nombreEl = document.getElementById("contacto-nombre");
+    const medioEl = document.getElementById("contacto-medio");
+    const mensajeEl = document.getElementById("contacto-mensaje");
+
+    waForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nombre = (nombreEl.value || "").trim();
+      const mensaje = (mensajeEl.value || "").trim();
+      const medio = (medioEl.value || "").trim();
+
+      // Validación mínima (el form es novalidate para controlar el flujo).
+      if (!nombre) { nombreEl.focus(); return; }
+      if (!mensaje) { mensajeEl.focus(); return; }
+
+      const lines = [`Hola Constructora Garibay, soy ${nombre}.`, "", mensaje];
+      if (medio) lines.push("", `Mi contacto: ${medio}`);
+
+      const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join("\n"))}`;
+      window.open(url, "_blank", "noopener");
+    });
+  }
+
   // ── Scroll-reveal via IntersectionObserver ──────────────
   const reveals = document.querySelectorAll(".reveal");
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
