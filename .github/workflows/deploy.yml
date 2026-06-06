@@ -32,6 +32,18 @@ jobs:
           test -f deploy/docker-compose.yml    || (echo "❌ falta deploy/docker-compose.yml" && exit 1)
           echo "✅ Artefactos presentes"
 
+      - name: Versionar assets (cache-busting por commit)
+        run: |
+          # Estampa ?v=<commit> en las referencias a main.js / styles.css de
+          # index.html. index.html se sirve no-cache (siempre fresco), así que
+          # cada deploy apunta a una URL nueva → el navegador y Cloudflare bajan
+          # la versión nueva sin purgar caché. El checkout es limpio cada vez,
+          # así que esto es idempotente.
+          VER="${GITHUB_SHA:0:8}"
+          perl -pi -e "s/(src=\"main\.js)\"/\$1?v=$VER\"/; s/(href=\"styles\.css)\"/\$1?v=$VER\"/" deploy/site/index.html
+          echo "→ assets versionados con ?v=$VER:"
+          grep -oE '(main\.js|styles\.css)\?v=[0-9a-f]+' deploy/site/index.html | sed 's/^/   /'
+
       - name: Sincronizar deploy/ al NAS
         env:
           SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
