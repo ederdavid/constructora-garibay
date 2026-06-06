@@ -257,6 +257,11 @@ a { color: inherit; text-decoration: none; }
 .contacto__form input:focus,
 .contacto__form textarea:focus { outline: none; border-color: var(--ink); }
 .contacto__form textarea { resize: vertical; }
+.contacto__form textarea.is-filled {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(154,106,74,.12);
+  transition: box-shadow .4s ease, border-color .4s ease;
+}
 .contacto__form .btn { justify-self: start; margin-top: .25rem; }
 
 /* ── Cotizador ────────────────────────────────────────────── */
@@ -268,6 +273,22 @@ a { color: inherit; text-decoration: none; }
 
 .cz-field { display: grid; gap: .6rem; }
 .cz-field__label { font-size: .85rem; color: var(--ink-soft); letter-spacing: .02em; }
+
+/* Segmented controls (tipo de obra / acabado) */
+.cz-seg { border: 0; padding: 0; margin: 0; display: grid; gap: .6rem; }
+.cz-seg legend { padding: 0; }
+.cz-seg__options { display: flex; flex-wrap: wrap; gap: .5rem; }
+.cz-seg label { position: relative; display: inline-flex; }
+.cz-seg input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.cz-seg span {
+  display: inline-flex; align-items: center; padding: .55rem 1.05rem;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+  font-size: .9rem; color: var(--ink-soft); cursor: pointer;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+.cz-seg span:hover { border-color: var(--ink); }
+.cz-seg input:checked + span { background: var(--ink); color: #fff; border-color: var(--ink); }
+.cz-seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 .cz-field__input {
   display: flex; align-items: center; gap: .5rem;
   border: 1px solid var(--line); border-radius: 8px; background: var(--surface);
@@ -314,6 +335,10 @@ a { color: inherit; text-decoration: none; }
   font-size: clamp(2.25rem, 6vw, 3.5rem); line-height: 1.05;
   letter-spacing: -0.02em; color: var(--ink);
   font-variant-numeric: tabular-nums;
+}
+.cz-result__detail {
+  font-size: .9rem; color: var(--ink-soft); margin: 0;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--line); width: 100%;
 }
 .cz-result__note { color: var(--muted); font-size: .9rem; margin: 0; max-width: 34ch; }
 .cotizador__result .btn { margin-top: auto; }

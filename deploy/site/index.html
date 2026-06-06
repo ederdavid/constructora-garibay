@@ -209,6 +209,24 @@
 
       <div class="cotizador__grid">
         <div class="cotizador__controls reveal">
+          <fieldset class="cz-seg">
+            <legend class="cz-field__label">Tipo de obra</legend>
+            <div class="cz-seg__options" id="cz-obra">
+              <label><input type="radio" name="cz-obra" value="casa" checked /><span>Casa residencial</span></label>
+              <label><input type="radio" name="cz-obra" value="comercial" /><span>Local comercial</span></label>
+              <label><input type="radio" name="cz-obra" value="remodelacion" /><span>Remodelación</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="cz-seg">
+            <legend class="cz-field__label">Nivel de acabado</legend>
+            <div class="cz-seg__options" id="cz-acabado">
+              <label><input type="radio" name="cz-acabado" value="economico" /><span>Económico</span></label>
+              <label><input type="radio" name="cz-acabado" value="medio" checked /><span>Medio</span></label>
+              <label><input type="radio" name="cz-acabado" value="premium" /><span>Premium</span></label>
+            </div>
+          </fieldset>
+
           <label class="cz-field" for="cz-m2">
             <span class="cz-field__label">Metros cuadrados de construcción</span>
             <span class="cz-field__input">
@@ -222,19 +240,17 @@
                  min="20" max="1000" step="5" value="120"
                  aria-label="Ajustar metros cuadrados" />
           <div class="cz-range__scale" aria-hidden="true"><span>20 m²</span><span>1000 m²</span></div>
-
-          <p class="cz-rate">Precio base de obra: <strong id="cz-rate">$15,000</strong> MXN por m²</p>
         </div>
 
         <div class="cotizador__result reveal">
           <span class="cz-result__label">Estimado aproximado</span>
           <output id="cz-total" class="cz-result__total" for="cz-m2">$1,800,000 MXN</output>
+          <p class="cz-result__detail" id="cz-detail">$15,000 MXN/m² · Casa residencial · acabado medio</p>
           <p class="cz-result__note">
-            Cifra orientativa basada en el precio base de obra. La cotización
-            final depende del diseño, los acabados, las instalaciones y las
-            condiciones del terreno.
+            Cifra orientativa. La cotización final depende del diseño, los
+            acabados, las instalaciones y las condiciones del terreno.
           </p>
-          <a href="#contacto" class="btn btn--primary">Solicitar cotización formal</a>
+          <a href="#contacto" class="btn btn--primary" id="cz-cta">Solicitar cotización formal</a>
         </div>
       </div>
     </section>
@@ -262,7 +278,7 @@
             <input type="email" name="correo" autocomplete="email" required />
           </label>
           <label>Cuéntanos del proyecto
-            <textarea name="mensaje" rows="4" required></textarea>
+            <textarea name="mensaje" id="contacto-mensaje" rows="5" required></textarea>
           </label>
           <button type="submit" class="btn btn--primary">Enviar mensaje</button>
         </form>
