@@ -42,6 +42,21 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             deploy/ "${NAS_USER}@${NAS_HOST}:${NAS_PATH}/"
 
+      - name: Escribir deploy/.env en el NAS (token del tunnel)
+        env:
+          SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}
+          CLOUDFLARED_TOKEN: ${{ secrets.CLOUDFLARED_TOKEN }}
+        run: |
+          if [ -z "${CLOUDFLARED_TOKEN}" ]; then
+            echo "❌ Falta el secret CLOUDFLARED_TOKEN en el repo (Settings → Secrets → Actions)"
+            exit 1
+          fi
+          # El .env vive solo en el NAS (rsync lo excluye); aquí lo regeneramos
+          # desde el secret de GitHub para que cloudflared tenga su token.
+          sshpass -e ssh -o StrictHostKeyChecking=no "${NAS_USER}@${NAS_HOST}" \
+            "umask 077 && printf 'CLOUDFLARED_TOKEN=%s\n' '${CLOUDFLARED_TOKEN}' > ${NAS_PATH}/.env"
+          echo "✅ deploy/.env escrito en el NAS"
+
       - name: Levantar / actualizar contenedores
         env:
           SSHPASS: ${{ secrets.NAS_SSH_PASSWORD }}

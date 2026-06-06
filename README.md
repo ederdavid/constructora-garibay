@@ -50,7 +50,12 @@ node scripts/cf-tunnel-setup.mjs
 
 El script crea el tunnel `constructora-garibay`, apunta `constructoragaribay.com`
 y `www` a él, configura el ingress hacia `nginx:80`, y al final imprime el
-`CLOUDFLARED_TOKEN`. Pégalo en `deploy/.env`.
+`CLOUDFLARED_TOKEN`. Guárdalo: va como secret en GitHub (paso 2), no en un archivo.
+
+> Si en vez del script creaste el tunnel desde el dashboard de Cloudflare,
+> asegúrate de configurar ahí un **Public Hostname**: `constructoragaribay.com`
+> (y `www`) → Service `HTTP` → `nginx:80`. El cloudflared corriendo con `--token`
+> usa la config de ingress que vive en Cloudflare, no un archivo local.
 
 **Permisos del `CF_API_TOKEN`** (My Profile → API Tokens → Create Custom Token):
 - Account · Cloudflare Tunnel · Edit
@@ -60,30 +65,25 @@ y `www` a él, configura el ingress hacia `nginx:80`, y al final imprime el
 
 Settings → Secrets and variables → Actions → New repository secret:
 
-| Secret              | Valor                                            |
-| ------------------- | ------------------------------------------------ |
-| `NAS_SSH_PASSWORD`  | contraseña SSH del usuario `acidfenix` en el NAS |
+| Secret               | Valor                                                 |
+| -------------------- | ----------------------------------------------------- |
+| `NAS_SSH_PASSWORD`   | contraseña SSH del usuario `acidfenix` en el NAS      |
+| `CLOUDFLARED_TOKEN`  | token del tunnel (lo imprime `cf-tunnel-setup.mjs`)   |
+
+El workflow regenera `deploy/.env` en el NAS a partir de `CLOUDFLARED_TOKEN` en
+cada deploy, así que no hay que copiar ningún archivo `.env` al NAS a mano.
 
 ### 3. Runner self-hosted
 
-El workflow corre en `runs-on: self-hosted`. Si ya tienes el runner de
-`cualotica` activo en el NAS/red, sirve igual. Si no, registra uno:
-Settings → Actions → Runners → New self-hosted runner.
+El workflow corre en `runs-on: self-hosted`. En cuentas personales los runners
+son por-repo, así que este repo tiene su propio runner en el mismo Mac:
+`actions.runner.ederdavid-constructora-garibay.Mac-garibay`
+(instalado en `~/actions-runner-garibay/`, convive con el de cualotica).
 
 ### 4. Primer deploy
 
-El workflow respeta el `deploy/.env` que ya exista en el NAS (lo excluye del
-rsync), así que primero copia el `.env` al NAS:
-
 ```bash
-ssh acidfenix@192.168.50.158 "mkdir -p /volume1/docker/constructora-garibay"
-scp deploy/.env acidfenix@192.168.50.158:/volume1/docker/constructora-garibay/.env
-```
-
-Luego dispara el deploy:
-
-```bash
-git add -A && git commit -m "Initial site + deploy" && git push origin main
+git push origin main
 ```
 
 …o desde la pestaña **Actions → Deploy to NAS → Run workflow**.
@@ -94,9 +94,10 @@ git add -A && git commit -m "Initial site + deploy" && git push origin main
 
 1. **rsync** `deploy/` → `acidfenix@192.168.50.158:/volume1/docker/constructora-garibay/`
    (con `--delete`, pero excluye `.env`).
-2. **`docker compose up -d --remove-orphans`** en el NAS — reinicia nginx con los
+2. **Escribe `deploy/.env`** en el NAS desde el secret `CLOUDFLARED_TOKEN`.
+3. **`docker compose up -d --remove-orphans`** en el NAS — reinicia nginx con los
    archivos nuevos y mantiene `cloudflared` corriendo.
-3. Verifica que `garibay-nginx` quede `running`.
+4. Verifica que `garibay-nginx` quede `running`.
 
 No hay paso de build: nginx sirve `deploy/site/` tal cual.
 
