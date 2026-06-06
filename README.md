@@ -65,13 +65,24 @@ y `www` a él, configura el ingress hacia `nginx:80`, y al final imprime el
 
 Settings → Secrets and variables → Actions → New repository secret:
 
-| Secret               | Valor                                                 |
-| -------------------- | ----------------------------------------------------- |
-| `NAS_SSH_PASSWORD`   | contraseña SSH del usuario `acidfenix` en el NAS      |
-| `CLOUDFLARED_TOKEN`  | token del tunnel (lo imprime `cf-tunnel-setup.mjs`)   |
+| Secret               | ¿Obligatorio? | Valor                                              |
+| -------------------- | ------------- | -------------------------------------------------- |
+| `NAS_SSH_PASSWORD`   | Sí            | contraseña SSH del usuario `acidfenix` en el NAS   |
+| `CLOUDFLARED_TOKEN`  | Opcional      | token del tunnel (lo imprime `cf-tunnel-setup.mjs`) |
 
-El workflow regenera `deploy/.env` en el NAS a partir de `CLOUDFLARED_TOKEN` en
-cada deploy, así que no hay que copiar ningún archivo `.env` al NAS a mano.
+**El token del tunnel admite dos patrones** (el workflow detecta cuál usas):
+
+- **A — secret de GitHub:** define `CLOUDFLARED_TOKEN` y el workflow regenera
+  `deploy/.env` en el NAS en cada deploy. Cero archivos a mano.
+- **B — `.env` en el NAS (patrón cualotica):** no definas el secret; coloca el
+  `.env` una vez y el workflow lo respeta (rsync lo excluye):
+  ```bash
+  ssh acidfenix@192.168.50.158 "mkdir -p /volume1/docker/constructora-garibay"
+  scp deploy/.env acidfenix@192.168.50.158:/volume1/docker/constructora-garibay/.env
+  ```
+
+Si no existe ni el secret ni el `.env` en el NAS, el deploy falla con un mensaje
+claro indicando ambas opciones.
 
 ### 3. Runner self-hosted
 
@@ -94,7 +105,8 @@ git push origin main
 
 1. **rsync** `deploy/` → `acidfenix@192.168.50.158:/volume1/docker/constructora-garibay/`
    (con `--delete`, pero excluye `.env`).
-2. **Escribe `deploy/.env`** en el NAS desde el secret `CLOUDFLARED_TOKEN`.
+2. **Asegura `deploy/.env`** en el NAS: lo regenera desde el secret
+   `CLOUDFLARED_TOKEN` si existe, o usa el que ya esté en el NAS.
 3. **`docker compose up -d --remove-orphans`** en el NAS — reinicia nginx con los
    archivos nuevos y mantiene `cloudflared` corriendo.
 4. Verifica que `garibay-nginx` quede `running`.
